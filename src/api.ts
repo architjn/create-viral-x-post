@@ -7,15 +7,17 @@
 export async function rewritePostText(originalText: string): Promise<string> {
   const apiUrl = process.env.VIRALX_API_URL;
   const apiToken = process.env.VIRALX_API_TOKEN;
+  const userId = `chrome-ext-user-${Date.now()}`;
 
   if (!apiUrl || !apiToken) {
-    console.error("API URL or Token is missing in environment variables.");
-    throw new Error("API configuration is missing.");
+    throw new Error("API configuration is missing in environment variables.");
   }
 
-  console.log(
-    `API: Calling ${apiUrl} for text: "${originalText.substring(0, 30)}..."`
-  );
+  const requestBody = {
+    inputs: { original_post_text: originalText },
+    response_mode: "blocking",
+    user: userId,
+  };
 
   try {
     const response = await fetch(apiUrl, {
@@ -24,16 +26,15 @@ export async function rewritePostText(originalText: string): Promise<string> {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiToken}`,
       },
-      body: JSON.stringify({ text: originalText }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
-      // Attempt to read error details from the response body
-      let errorBody = "Unknown error";
+      let errorBody = "Unknown API error";
       try {
         errorBody = await response.text();
       } catch (e) {
-        /* Ignore if reading body fails */
+        /* Ignore */
       }
       throw new Error(
         `API Error: ${response.status} ${response.statusText} - ${errorBody}`
@@ -42,20 +43,16 @@ export async function rewritePostText(originalText: string): Promise<string> {
 
     const data = await response.json();
 
-    // **IMPORTANT**: Adjust this based on your actual API response structure
-    const rewrittenText = data.rewrittenText; // Assuming the API returns { rewrittenText: "..." }
+    const rewrittenText = data.answer;
 
-    if (!rewrittenText) {
-      throw new Error("API response did not contain rewrittenText.");
+    if (typeof rewrittenText !== "string") {
+      throw new Error("Invalid response format from API.");
     }
 
-    console.log(
-      `API: Received rewritten text: "${rewrittenText.substring(0, 50)}..."`
-    );
     return rewrittenText;
   } catch (error) {
-    console.error("Error during API call:", error);
-    // Re-throw the error so the caller (content script) can handle it
-    throw error;
+    // It's often useful to know the error occurred, even if not logging details
+    // Consider re-adding targeted logging if needed during debugging
+    throw error; // Re-throw for the content script to handle
   }
 }
