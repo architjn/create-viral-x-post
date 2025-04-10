@@ -11,6 +11,7 @@ module.exports = (env, argv) => {
     entry: {
       background: "./src/background.ts",
       content: "./src/content.ts",
+      popup: "./src/popup.js",
     },
     output: {
       filename: "[name].js",
@@ -30,7 +31,10 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new CopyPlugin({
-        patterns: [{ from: "manifest.json", to: "." }],
+        patterns: [
+          { from: "manifest.json", to: "." },
+          { from: "src/popup.html", to: "." }, // Add popup.html
+        ],
       }),
       new Dotenv(),
     ],

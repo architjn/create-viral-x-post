@@ -5,7 +5,7 @@
  * @returns A promise that resolves with the rewritten text, or rejects on error.
  */
 export async function rewritePostText(originalText: string): Promise<string> {
-  const apiUrl = process.env.VIRALX_API_URL;
+  const apiUrl = `${process.env.VIRALX_API_URL}/completion-messages`;
   const apiToken = process.env.VIRALX_API_TOKEN;
   const userId = `chrome-ext-user-${Date.now()}`;
 
