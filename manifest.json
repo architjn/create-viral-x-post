@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Viral X Post Helper",
+  "version": "1.0.0",
+  "description": "Adds functionality to specific web pages.",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://x.com/*"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ],
+  "permissions": [],
+  "action": {
+    "default_title": "Viral X Post Helper"
+  }
+}
