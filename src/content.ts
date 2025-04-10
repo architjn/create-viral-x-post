@@ -42,56 +42,63 @@ async function handleViralPostAction(): Promise<void> {
 }
 
 function findElementAndAddButton(observer: MutationObserver | null) {
-  const $targetElement = $('[aria-label="Add a GIF"]').parent();
+  // Find ALL elements with the target aria-label
+  $('[aria-label="Add a GIF"]').each(function () {
+    const $targetElement = $(this).parent(); // Get the parent of the CURRENT element
 
-  if ($targetElement.length) {
-    const $newButton = $targetElement.clone();
-    const $viralPostButton = $newButton.find("button");
-    const $svgElement = $viralPostButton.find("svg");
-
-    // Set initial attributes and icon
-    $viralPostButton.attr("aria-label", "Add a Viral Post");
-    $svgElement.html(
-      '<path d="M16.5 9.5L12.3 13.7L10.7 11.3L7.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>' +
-        '<path d="M14.5 9.5H16.5V11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>' +
-        '<path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'
-    );
-
-    const originalSVG = $svgElement.html(); // Store original SVG *after* setting it
-
-    // --- Add Click Handler ---
-    $viralPostButton.on("click", async (event) => {
-      event.preventDefault(); // Prevent default button action if any
-      event.stopPropagation(); // Prevent event bubbling if needed
-
-      if ($viralPostButton.prop("disabled")) {
-        return; // Do nothing if already processing
+    if ($targetElement.length) {
+      // --- Check if our button already exists NEXT TO THIS SPECIFIC target ---
+      const $existingViralButton = $targetElement
+        .next()
+        .find('button[aria-label="Add a Viral Post"]');
+      if ($existingViralButton.length) {
+        // console.log("Viral Post button already exists for this target.");
+        return; // Skip to the next element if button is already there
       }
+      // -----------------------------------------------------------------------
 
-      $viralPostButton.prop("disabled", true);
-      $svgElement.html(spinnerSVG); // Show spinner
+      const $newButton = $targetElement.clone();
+      const $viralPostButton = $newButton.find("button");
+      const $svgElement = $viralPostButton.find("svg");
 
-      try {
-        await handleViralPostAction();
-        // Optional: Add success feedback here
-      } catch (error) {
-        console.error("Viral Post action failed:", error);
-        // Optional: Add error feedback here
-      } finally {
-        $svgElement.html(originalSVG); // Restore original icon
-        $viralPostButton.prop("disabled", false); // Re-enable button
-      }
-    });
-    // -------------------------
+      // Set initial attributes and icon
+      $viralPostButton.attr("aria-label", "Add a Viral Post");
+      $svgElement.html(
+        '<path d="M16.5 9.5L12.3 13.7L10.7 11.3L7.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>' +
+          '<path d="M14.5 9.5H16.5V11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>' +
+          '<path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'
+      );
 
-    $targetElement.after($newButton);
+      const originalSVG = $svgElement.html(); // Store original SVG *after* setting it
 
-    // Once found, we don't need to observe anymore
-    if (observer) {
-      console.log("Disconnecting observer.");
-      observer.disconnect();
+      // --- Add Click Handler ---
+      $viralPostButton.on("click", async (event) => {
+        event.preventDefault(); // Prevent default button action if any
+        event.stopPropagation(); // Prevent event bubbling if needed
+
+        if ($viralPostButton.prop("disabled")) {
+          return; // Do nothing if already processing
+        }
+
+        $viralPostButton.prop("disabled", true);
+        $svgElement.html(spinnerSVG); // Show spinner
+
+        try {
+          await handleViralPostAction();
+          // Optional: Add success feedback here
+        } catch (error) {
+          console.error("Viral Post action failed:", error);
+          // Optional: Add error feedback here
+        } finally {
+          $svgElement.html(originalSVG); // Restore original icon
+          $viralPostButton.prop("disabled", false); // Re-enable button
+        }
+      });
+      // -------------------------
+
+      $targetElement.after($newButton);
     }
-  }
+  });
 }
 
 // Options for the observer (which mutations to observe)
