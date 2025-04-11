@@ -30,8 +30,8 @@ chrome.runtime.onMessage.addListener(
         }
       );
 
-      // Immediately clear any previous error/result
-      chrome.storage.local.remove([textStorageKey, errorStorageKey], () => {
+      // Immediately clear any previous error/result -> ONLY clear error now
+      chrome.storage.local.remove([errorStorageKey], () => {
         if (chrome.runtime.lastError) {
           console.error(
             "Background: Error clearing previous state:",

@@ -52,7 +52,6 @@ function findElementAndAddButton(observer: MutationObserver | null) {
         .next()
         .find('button[aria-label="Add a Viral Post"]');
       if ($existingViralButton.length) {
-        // console.log("Viral Post button already exists for this target.");
         return; // Skip to the next element if button is already there
       }
       // -----------------------------------------------------------------------
@@ -81,17 +80,15 @@ function findElementAndAddButton(observer: MutationObserver | null) {
         }
 
         $viralPostButton.prop("disabled", true);
-        $svgElement.html(spinnerSVG); // Show spinner
+        $svgElement.html(spinnerSVG);
 
         try {
           await handleViralPostAction();
-          // Optional: Add success feedback here
         } catch (error) {
           console.error("Viral Post action failed:", error);
-          // Optional: Add error feedback here
         } finally {
           $svgElement.html(originalSVG); // Restore original icon
-          $viralPostButton.prop("disabled", false); // Re-enable button
+          $viralPostButton.prop("disabled", false);
         }
       });
       // -------------------------

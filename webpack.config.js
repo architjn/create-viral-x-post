@@ -33,7 +33,8 @@ module.exports = (env, argv) => {
       new CopyPlugin({
         patterns: [
           { from: "manifest.json", to: "." },
-          { from: "src/popup.html", to: "." }, // Add popup.html
+          { from: "src/popup.html", to: "." },
+          { from: "src/images", to: "images" },
         ],
       }),
       new Dotenv(),

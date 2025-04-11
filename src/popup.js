@@ -68,7 +68,6 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("saveCurrentTextAndResetState called (input event)");
     const textToSave = postTextArea.value;
 
-    // Save the current text
     chrome.storage.local.set({ [textStorageKey]: textToSave }, function () {
       if (chrome.runtime.lastError) {
         console.error("Error saving text:", chrome.runtime.lastError.message);
@@ -133,9 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
     postTextArea.addEventListener("input", saveCurrentTextAndResetState);
 
     submitButton.addEventListener("click", function () {
-      // Save current text one last time before sending
-      saveCurrentTextAndResetState();
-      const currentText = postTextArea.value; // Get value after saving
+      const currentText = postTextArea.value; // Get value directly
       console.log("Text submitted for enhancement:", currentText);
 
       // Optimistically update UI
@@ -190,9 +187,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-
-/*
-// --- Placeholder for testing without a real API ---
-// ... (Removed placeholder code) ...
-// --- End of placeholder ---
-*/

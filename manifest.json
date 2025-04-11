@@ -3,6 +3,11 @@
   "name": "Viral X Post Helper",
   "version": "1.0.0",
   "description": "Adds functionality to specific web pages.",
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
   "background": {
     "service_worker": "background.js"
   },
@@ -21,6 +26,7 @@
   ],
   "action": {
     "default_title": "Viral X Post Helper",
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": "images/icon512.png"
   }
 }
