@@ -16,7 +16,9 @@
       ]
     }
   ],
-  "permissions": [],
+  "permissions": [
+    "storage"
+  ],
   "action": {
     "default_title": "Viral X Post Helper",
     "default_popup": "popup.html"
