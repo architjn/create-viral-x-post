@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Viral X Post Enhancer",
   "version": "1.0.1",
-  "description": "This plugin helps enhance your post to increase your change of going viral based on the data of existing viral posts. It is specially designed to work with twitter (X Platform)",
+  "description": "Enhances your X posts to increase virality based on data from existing viral posts",
   "icons": {
     "16": "images/icons/icon16.png",
     "48": "images/icons/icon48.png",
