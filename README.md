@@ -55,14 +55,14 @@ If you want the absolute latest code or the extension is temporarily unavailable
     ```bash
     npm install
     ```
-3.  **Environment Variables:** This extension uses an AI service (Dify) for its analysis feature. Developers need to configure API credentials to connect to this service.
+3.  **Environment Variables:** This extension communicates with a backend server for its analysis feature. Developers need to configure API credentials to connect to this service.
     *   Create a file named `.env` in the project root.
-    *   Add your Dify API key and potentially the API endpoint URL to the `.env` file. Example:
+    *   Add your Backend Server API key and potentially the API endpoint URL to the `.env` file. Example:
         ```env
-        DIFY_API_KEY=your_api_key_here
-        # DIFY_API_URL=your_dify_instance_url_here (if not using the default)
+        BACKEND_API_KEY=your_api_key_here
+        BACKEND_API_URL=your_backend_server_url_here # If not using a default/included one
         ```
-    *   *(Explain clearly how developers can obtain a Dify API key and configure the necessary endpoint/workflow if applicable. Link to Dify documentation or signup if possible.)*
+    *   *(Explain clearly how developers can set up the backend service or obtain the necessary API key and endpoint URL. Link to backend setup documentation if applicable.)*
 4.  **Build/Run:**
     *   For a production build: `npm run build`
     *   For development with auto-reloading (using `webpack --watch` or similar): `npm run dev` *(Verify this command in your package.json)*
