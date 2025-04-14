@@ -11,16 +11,6 @@
   "background": {
     "service_worker": "background.js"
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "https://x.com/*"
-      ],
-      "js": [
-        "content.js"
-      ]
-    }
-  ],
   "permissions": [
     "storage"
   ],

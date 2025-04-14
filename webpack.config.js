@@ -10,7 +10,6 @@ module.exports = (env, argv) => {
     // mode is set via CLI flag, no need for it here
     entry: {
       background: "./src/background.ts",
-      content: "./src/content.ts",
       popup: "./src/popup.js",
     },
     output: {
